@@ -88,15 +88,6 @@
               performancePercent = 50; } else { performancePercent = 30; } var
               barColor = '#6eb670'; if (attempts > 10) { barColor = '#f56565'; }
               else if (attempts > 7) { barColor = '#f6e05e'; } %>
-              <div
-                style="
-                  position: absolute;
-                  height: 100%;
-                  width: <%= performancePercent %>%;
-                  background-color: <%= barColor %>;
-                  border-radius: 4px;
-                "
-              ></div>
             </div>
             <div
               style="
