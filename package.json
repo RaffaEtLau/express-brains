@@ -1,0 +1,27 @@
+{
+  "name": "express-brains",
+  "version": "1.0.0",
+  "description": "Jeu de devinette créé avec Express.js",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "jeu",
+    "devinette"
+  ],
+  "author": "Lauriane LUCE",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
