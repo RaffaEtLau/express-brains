@@ -55,12 +55,18 @@
                 overflow: hidden;
               "
             >
+              <% let performancePercent = 0; if (attempts <= 4) {
+              performancePercent = 100; } else if (attempts <= 7) {
+              performancePercent = 80; } else if (attempts <= 10) {
+              performancePercent = 50; } else { performancePercent = 30; } let
+              barColor = '#6eb670'; if (attempts > 10) { barColor = '#f56565'; }
+              else if (attempts > 7) { barColor = '#f6e05e'; } %>
               <div
                 style="
                   position: absolute;
                   height: 100%;
-                  width: 80%;
-                  background-color: #6eb670;
+                  width: <%= performancePercent %>%;
+                  background-color: <%= barColor %>;
                   border-radius: 4px;
                 "
               ></div>
@@ -74,9 +80,9 @@
                 color: #718096;
               "
             >
-              <span>Excellent</span>
-              <span>Bon</span>
-              <span>Peut mieux faire</span>
+              <span>Peut mieux faire (8+)</span>
+              <span>Bon (5-7)</span>
+              <span>Excellent (≤4)</span>
             </div>
           </div>
 
