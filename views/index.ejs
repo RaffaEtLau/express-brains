@@ -121,7 +121,8 @@
     </div>
   </div>
 
-  <% if (topPlayers && topPlayers.length > 0) { %>
+  <% if (typeof topPlayers !== 'undefined' && topPlayers && topPlayers.length >
+  0) { %>
   <div class="card" style="margin-top: 1.5rem">
     <h3>Meilleurs joueurs</h3>
     <div style="overflow-x: auto; margin-top: 1.5rem">
