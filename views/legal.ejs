@@ -1,0 +1,80 @@
+<%- include('partials/header', { title: 'Mentions légales' }) %>
+
+<main>
+  <div class="card" style="text-align: left">
+    <h2 style="text-align: center">Mentions légales</h2>
+
+    <div style="margin-top: 2rem">
+      <h3>1. Informations générales</h3>
+      <p style="margin-top: 1rem">
+        Express Brains est une application web développée dans le cadre d'un
+        projet éducatif. Elle n'est pas destinée à un usage commercial et ne
+        collecte pas de données personnelles sensibles.
+      </p>
+
+      <h3 style="margin-top: 2rem">2. Propriété intellectuelle</h3>
+      <p style="margin-top: 1rem">
+        L'ensemble du contenu de cette application (textes, images, graphismes,
+        logo, icônes, etc.) est la propriété exclusive de ses créateurs. Toute
+        reproduction, représentation, modification, publication, adaptation de
+        tout ou partie des éléments du site, quel que soit le moyen ou le
+        procédé utilisé, est interdite, sauf autorisation écrite préalable.
+      </p>
+
+      <h3 style="margin-top: 2rem">3. Gestion des données</h3>
+      <p style="margin-top: 1rem">
+        Cette application utilise le localStorage du navigateur pour stocker les
+        données utilisateur et les statistiques de jeu. Ces données sont
+        conservées uniquement sur l'appareil de l'utilisateur et ne sont pas
+        partagées avec des tiers.
+      </p>
+      <p style="margin-top: 0.5rem">Les informations recueillies sont :</p>
+      <ul style="list-style-type: disc; margin-left: 2rem; margin-top: 0.5rem">
+        <li>Adresse email (uniquement pour l'identification)</li>
+        <li>Pseudo</li>
+        <li>Mot de passe (haché pour la sécurité)</li>
+        <li>Statistiques de jeu (nombre de parties jouées, scores, etc.)</li>
+      </ul>
+
+      <h3 style="margin-top: 2rem">4. Cookies</h3>
+      <p style="margin-top: 1rem">
+        Cette application n'utilise pas de cookies tiers pour le suivi. Seules
+        les sessions Express sont utilisées pour maintenir l'état de connexion
+        de l'utilisateur.
+      </p>
+
+      <h3 style="margin-top: 2rem">5. Limitation de responsabilité</h3>
+      <p style="margin-top: 1rem">
+        Les créateurs de cette application ne pourront être tenus responsables
+        des dommages directs ou indirects causés au matériel de l'utilisateur,
+        lors de l'accès à l'application.
+      </p>
+
+      <h3 style="margin-top: 2rem">
+        6. Droit applicable et juridiction compétente
+      </h3>
+      <p style="margin-top: 1rem">
+        Tout litige en relation avec l'utilisation de cette application est
+        soumis au droit français. L'utilisateur reconnaît la compétence
+        exclusive des tribunaux compétents de [Ville].
+      </p>
+
+      <h3 style="margin-top: 2rem">7. Crédits</h3>
+      <p style="margin-top: 1rem">
+        <strong>Icônes :</strong> FontAwesome<br />
+        <strong>Police de caractères :</strong> Poppins (Google Fonts)<br />
+        <strong>Framework :</strong> Express.js<br />
+        <strong>Moteur de template :</strong> EJS
+      </p>
+    </div>
+
+    <div style="margin-top: 3rem; text-align: center">
+      <a href="/" class="btn">
+        <i class="fas fa-home" style="margin-right: 0.5rem"></i> Retour à
+        l'accueil
+      </a>
+    </div>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

@@ -1,4 +1,3 @@
-
 :root {
   --primary-color: #4a6fa5;
   --secondary-color: #7b9acc;
@@ -39,15 +38,73 @@ body {
   flex-direction: column;
 }
 
+/* Navigation */
+.nav-container {
+  background-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav-brand a {
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: white;
+}
+
+.nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.auth-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.user-info {
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Container and content */
 .container {
-  max-width: 900px;
+  max-width: 1000px;
   width: 100%;
   margin: 0 auto;
   padding: 2rem 1.5rem;
   flex: 1;
 }
 
-header {
+header.main-header {
   text-align: center;
   margin-bottom: 3rem;
   animation: fadeIn 0.8s ease-out;
@@ -164,24 +221,39 @@ h2 {
 
 .form-group {
   margin-bottom: 1.5rem;
+  text-align: left;
 }
 
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
 input[type="number"] {
   width: 100%;
-  max-width: 250px;
   padding: 0.75rem 1rem;
-  margin: 0 auto;
   border: 2px solid #e2e8f0;
   border-radius: var(--radius-md);
-  font-size: 1.25rem;
-  text-align: center;
+  font-size: 1rem;
   color: var(--text-color);
   background-color: #fff;
   transition: all 0.2s ease;
   box-shadow: var(--shadow-sm);
 }
 
-input[type="number"]:focus {
+input[type="number"] {
+  max-width: 200px;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 1.2rem;
+}
+
+input:focus {
   outline: none;
   border-color: var(--secondary-color);
   box-shadow: 0 0 0 3px rgba(123, 154, 204, 0.3);
@@ -219,11 +291,19 @@ input[type="number"]:focus {
   box-shadow: var(--shadow-sm);
 }
 
+.btn-primary {
+  background-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: #405f8f;
+}
+
 .alert {
   padding: 1rem;
   border-radius: var(--radius-md);
   margin: 1.5rem auto;
-  max-width: 500px;
+  max-width: 800px;
   animation: fadeIn 0.3s ease-out;
   box-shadow: var(--shadow-sm);
 }
@@ -266,60 +346,126 @@ footer {
   font-size: 0.875rem;
 }
 
-/* Animations and enhancements */
-.card-flip {
-  perspective: 1000px;
+/* Authentication pages */
+.auth-card {
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  text-align: left;
 }
 
-.card-inner {
+.auth-form {
+  margin-top: 2rem;
+}
+
+.form-actions {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.auth-links {
+  margin-top: 2rem;
+  font-size: 0.875rem;
+  color: var(--light-text);
+  text-align: center;
+}
+
+.auth-links a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+}
+
+/* Leaderboard styles */
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.leaderboard-table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.leaderboard-table tr:hover {
+  background-color: #f7fafc;
+}
+
+.leaderboard-rank {
+  font-weight: 700;
+  text-align: center;
+}
+
+.rank-1,
+.rank-2,
+.rank-3 {
+  font-size: 1.125rem;
+}
+
+.rank-1 {
+  color: gold;
+}
+
+.rank-2 {
+  color: silver;
+}
+
+.rank-3 {
+  color: #cd7f32; /* bronze */
+}
+
+/* Performance bar */
+.performance {
   position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
+  margin: 2rem 0;
 }
 
-.card-flip:hover .card-inner {
-  transform: rotateY(180deg);
-}
-
-.card-front,
-.card-back {
+/* Confetti for win page */
+#confetti-container {
   position: absolute;
   width: 100%;
   height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.card-back {
-  transform: rotateY(180deg);
-}
-
-.confetti {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: #f00;
-  border-radius: 50%;
-  animation: confetti 4s ease-in infinite;
-}
-
-@keyframes confetti {
+@keyframes confetti-fall {
   0% {
     transform: translateY(0) rotate(0);
     opacity: 1;
   }
   100% {
-    transform: translateY(100vh) rotate(720deg);
+    transform: translateY(500px) rotate(720deg);
     opacity: 0;
   }
 }
 
-/* Responsive adjustments */
+/* Responsive styles */
 @media (max-width: 768px) {
-  .container {
-    padding: 1.5rem 1rem;
+  .navbar {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .nav-brand {
+    margin-bottom: 1rem;
+  }
+
+  .nav-links {
+    margin-bottom: 1rem;
   }
 
   header h1 {
@@ -336,6 +482,18 @@ footer {
 }
 
 @media (max-width: 480px) {
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .nav-auth {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   header h1 {
     font-size: 2rem;
   }

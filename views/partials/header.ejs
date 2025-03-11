@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EXPRESS BRAINS | <%= title %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://img.icons8.com/color/48/000000/brain.png"
+    />
+  </head>
+  <body>
+    <div class="nav-container">
+      <nav class="navbar">
+        <div class="nav-brand">
+          <a href="/">Express Brain</a>
+        </div>
+        <div class="nav-links">
+          <a href="/game/play" class="nav-link">Jouer</a>
+          <a href="/game/leaderboard" class="nav-link">Classement</a>
+          <a href="/game/teams" class="nav-link">Équipes</a>
+        </div>
+        <div class="nav-auth">
+          <% if (user) { %>
+          <span class="user-info">
+            <i class="fas fa-user"></i> <%= user.pseudo %>
+          </span>
+          <a href="/auth/logout" class="auth-link">
+            <i class="fas fa-sign-out-alt"></i> Déconnexion
+          </a>
+          <% } else { %>
+          <a href="/auth/login" class="auth-link">
+            <i class="fas fa-sign-in-alt"></i> Connexion
+          </a>
+          <% } %>
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+      <header class="main-header">
+        <h1>EXPRESS BRAINS</h1>
+        <p>
+          Découvrez en un minimum de tours le nombre qui se cache derrière la
+          carte mystère !
+        </p>
+      </header>
+
+      <% if (success_msg && success_msg.length > 0) { %>
+      <div class="alert alert-success"><%= success_msg %></div>
+      <% } %> <% if (error_msg && error_msg.length > 0) { %>
+      <div class="alert alert-error"><%= error_msg %></div>
+      <% } %> <% if (error && error.length > 0) { %>
+      <div class="alert alert-error"><%= error %></div>
+      <% } %>
+    </div>
+

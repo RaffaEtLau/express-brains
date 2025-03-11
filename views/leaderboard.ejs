@@ -1,0 +1,59 @@
+<%- include('partials/header', { title: 'Classement' }) %>
+
+<main>
+  <div class="card">
+    <h2>Classement des joueurs</h2>
+
+    <div style="overflow-x: auto; margin-top: 2rem">
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th>Rang</th>
+            <th>Joueur</th>
+            <th>Meilleur score</th>
+            <th>Meilleure performance</th>
+            <th>Parties jouées</th>
+            <th>Parties gagnées</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% topPlayers.forEach((player, index) => { %>
+          <tr>
+            <td class="leaderboard-rank rank-<%= index + 1 %>">
+              <%= index + 1 %>
+            </td>
+            <td><%= player.pseudo %></td>
+            <td><%= player.bestScore %> points</td>
+            <td><%= player.bestAttempts %> tentatives</td>
+            <td><%= player.gamesPlayed %></td>
+            <td><%= player.gamesWon %></td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <% if (!user) { %>
+    <div style="margin-top: 2rem">
+      <p>
+        <i
+          class="fas fa-info-circle"
+          style="margin-right: 0.5rem; color: var(--primary-color)"
+        ></i>
+        <a href="/auth/register" style="color: var(--primary-color)"
+          >Créez un compte</a
+        >
+        pour apparaître dans le classement !
+      </p>
+    </div>
+    <% } %>
+  </div>
+
+  <div style="margin-top: 2rem; text-align: center">
+    <a href="/game/play" class="btn">
+      <i class="fas fa-play-circle" style="margin-right: 0.5rem"></i> Jouer
+    </a>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

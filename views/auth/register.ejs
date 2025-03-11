@@ -1,0 +1,75 @@
+<%- include('../partials/header', { title: 'Créer un compte' }) %>
+
+<main>
+  <div class="card auth-card">
+    <h2>CRÉER UN COMPTE</h2>
+
+    <form action="/auth/register" method="POST" class="auth-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          autocomplete="email"
+          placeholder="Votre adresse email"
+          value="<%= typeof email != 'undefined' ? email : '' %>"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="pseudo">Pseudo</label>
+        <input
+          type="text"
+          id="pseudo"
+          name="pseudo"
+          required
+          minlength="3"
+          maxlength="20"
+          autocomplete="username"
+          placeholder="Choisissez un pseudo"
+          value="<%= typeof pseudo != 'undefined' ? pseudo : '' %>"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          minlength="6"
+          placeholder="Choisissez un mot de passe"
+          autocomplete="new-password"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password2">Confirmer le mot de passe</label>
+        <input
+          type="password"
+          id="password2"
+          name="password2"
+          required
+          minlength="6"
+          placeholder="Confirmez votre mot de passe"
+          autocomplete="new-password"
+        />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-user-plus"></i> Créer un compte
+        </button>
+      </div>
+    </form>
+
+    <div class="auth-links">
+      <p>Vous avez déjà un compte? <a href="/auth/login">Connectez-vous</a></p>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

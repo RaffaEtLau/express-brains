@@ -1,142 +1,198 @@
-<!DOCTYPE html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EXPRESS BRAINS | Jeu de Devinette</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="https://img.icons8.com/color/48/000000/brain.png"
-    />
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <h1>EXPRESS BRAINS</h1>
+<%- include('partials/header', { title: 'Accueil' }) %>
+
+<main>
+  <div class="card">
+    <div class="card-icon">
+      <div class="card-icon-inner">
+        <svg viewBox="0 0 100 100" width="100" height="100">
+          <rect
+            x="10"
+            y="10"
+            width="80"
+            height="80"
+            rx="15"
+            fill="#4a6fa5"
+            transform="rotate(45 50 50)"
+          />
+          <text
+            x="50"
+            y="65"
+            font-size="60"
+            text-anchor="middle"
+            fill="white"
+            style="font-family: Arial, sans-serif; font-weight: bold"
+          >
+            ?
+          </text>
+        </svg>
+      </div>
+    </div>
+
+    <h2>Bienvenue sur Express Brains</h2>
+    <p style="margin-bottom: 2rem">
+      Testez votre logique en devinant un nombre entre 1 et 100 en un minimum
+      d'essais !
+    </p>
+
+    <div class="action-container">
+      <a href="/game/play" class="btn">
+        <i class="fas fa-play-circle" style="margin-right: 0.5rem"></i> Jouer
+      </a>
+
+      <% if (!user) { %>
+      <div style="margin-top: 1.5rem">
         <p>
-          Découvrez en un minimum de tours le nombre qui se cache derrière la
-          carte mystère !
+          Ou
+          <a href="/auth/login" style="color: var(--primary-color)"
+            >connectez-vous</a
+          >
+          pour enregistrer vos scores !
         </p>
-      </header>
+      </div>
+      <% } %>
+    </div>
+  </div>
 
-      <main>
-        <div class="card">
-          <div class="card-icon">
-            <div class="card-icon-inner">
-              <svg viewBox="0 0 100 100" width="100" height="100">
-                <rect
-                  x="10"
-                  y="10"
-                  width="80"
-                  height="80"
-                  rx="15"
-                  fill="#4a6fa5"
-                  transform="rotate(45 50 50)"
-                />
-                <text
-                  x="50"
-                  y="65"
-                  font-size="60"
-                  text-anchor="middle"
-                  fill="white"
-                  style="font-family: Arial, sans-serif; font-weight: bold"
-                >
-                  ?
-                </text>
-              </svg>
-            </div>
-          </div>
-
-          <h2>Bienvenue au jeu de devinette</h2>
-          <p>
-            Essayez de deviner un nombre entre 1 et 100. Combien de tours vous
-            faudra-t-il ?
-          </p>
-
-          <div class="action-container" style="margin-top: 2rem">
-            <a href="/play" class="btn">
-              <i class="fas fa-play-circle" style="margin-right: 0.5rem"></i>
-              Commencer à jouer
-            </a>
-          </div>
-        </div>
-
-        <div
-          class="features"
+  <div
+    class="features-container"
+    style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.5rem"
+  >
+    <div
+      class="card"
+      style="flex: 1; min-width: 250px; text-align: left; padding: 1.5rem"
+    >
+      <div style="display: flex; align-items: center; margin-bottom: 1rem">
+        <i
+          class="fas fa-brain"
           style="
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 2rem;
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+          "
+        ></i>
+        <h3>Entraînez votre logique</h3>
+      </div>
+      <p>
+        Express Brains est un jeu simple mais puissant pour développer vos
+        compétences en résolution de problèmes et en pensée logique.
+      </p>
+    </div>
+
+    <div
+      class="card"
+      style="flex: 1; min-width: 250px; text-align: left; padding: 1.5rem"
+    >
+      <div style="display: flex; align-items: center; margin-bottom: 1rem">
+        <i
+          class="fas fa-trophy"
+          style="
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+          "
+        ></i>
+        <h3>Battez les records</h3>
+      </div>
+      <p>
+        Comparez vos performances avec d'autres joueurs et tentez d'atteindre le
+        sommet du classement !
+      </p>
+    </div>
+
+    <div
+      class="card"
+      style="flex: 1; min-width: 250px; text-align: left; padding: 1.5rem"
+    >
+      <div style="display: flex; align-items: center; margin-bottom: 1rem">
+        <i
+          class="fas fa-users"
+          style="
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+          "
+        ></i>
+        <h3>Jouez en équipe</h3>
+      </div>
+      <p>
+        Créez ou rejoignez une équipe pour participer à des défis collectifs et
+        progresser ensemble.
+      </p>
+    </div>
+  </div>
+
+  <% if (topPlayers && topPlayers.length > 0) { %>
+  <div class="card" style="margin-top: 1.5rem">
+    <h3>Meilleurs joueurs</h3>
+    <div style="overflow-x: auto; margin-top: 1.5rem">
+      <table class="leaderboard-table" style="width: 100%">
+        <thead>
+          <tr>
+            <th>Rang</th>
+            <th>Joueur</th>
+            <th>Meilleur score</th>
+            <th>Meilleure performance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% topPlayers.forEach((player, index) => { %>
+          <tr>
+            <td class="leaderboard-rank rank-<%= index + 1 %>">
+              <%= index + 1 %>
+            </td>
+            <td><%= player.pseudo %></td>
+            <td><%= player.bestScore %> points</td>
+            <td><%= player.bestAttempts %> tentatives</td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top: 1.5rem">
+      <a href="/game/leaderboard" style="color: var(--primary-color)">
+        Voir le classement complet
+        <i class="fas fa-arrow-right" style="margin-left: 0.5rem"></i>
+      </a>
+    </div>
+  </div>
+  <% } %>
+
+  <div class="card" style="margin-top: 1.5rem">
+    <h3>Statistiques globales</h3>
+    <div
+      style="
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+      "
+    >
+      <div style="text-align: center; padding: 1rem">
+        <div
+          style="
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
           "
         >
-          <div
-            style="
-              flex: 1;
-              min-width: 250px;
-              background: white;
-              padding: 1.5rem;
-              border-radius: var(--radius-md);
-              box-shadow: var(--shadow-sm);
-            "
-          >
-            <div
-              style="
-                color: var(--primary-color);
-                font-size: 1.5rem;
-                margin-bottom: 0.5rem;
-              "
-            >
-              <i class="fas fa-brain"></i>
-            </div>
-            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem">
-              Entraînez votre logique
-            </h3>
-            <p style="color: var(--light-text); font-size: 0.9rem">
-              Développez vos compétences en résolution de problèmes de manière
-              ludique.
-            </p>
-          </div>
-
-          <div
-            style="
-              flex: 1;
-              min-width: 250px;
-              background: white;
-              padding: 1.5rem;
-              border-radius: var(--radius-md);
-              box-shadow: var(--shadow-sm);
-            "
-          >
-            <div
-              style="
-                color: var(--primary-color);
-                font-size: 1.5rem;
-                margin-bottom: 0.5rem;
-              "
-            >
-              <i class="fas fa-medal"></i>
-            </div>
-            <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem">
-              Battez votre record
-            </h3>
-            <p style="color: var(--light-text); font-size: 0.9rem">
-              Essayez de trouver le nombre avec le moins d'essais possible !
-            </p>
-          </div>
+          <%= stats.totalPlayers %>
         </div>
-      </main>
-
-      <footer>
-        <p>EXPRESS BRAINS © ENI 2025 LUCE L.</p>
-      </footer>
+        <div style="color: var(--light-text)">Joueurs inscrits</div>
+      </div>
+      <div style="text-align: center; padding: 1rem">
+        <div
+          style="
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+          "
+        >
+          <%= stats.totalGames %>
+        </div>
+        <div style="color: var(--light-text)">Parties jouées</div>
+      </div>
     </div>
-  </body>
-</html>
+  </div>
+</main>
+
+<%- include('partials/footer') %>
