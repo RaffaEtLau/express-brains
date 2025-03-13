@@ -1,61 +1,50 @@
+// routes/index.js
 const express = require("express");
 const router = express.Router();
 
-// Route pour la page d'accueil
-router.get("/", (req, res) => {
-  // Données de démonstration pour les statistiques
-  const stats = {
-    totalPlayers: 235,
-    totalGames: 1248,
-  };
+// Vérifier que les contrôleurs sont correctement importés
+const homeController = require("../controllers/homeController");
+const authController = require("../controllers/authController");
+const gameController = require("../controllers/gameController");
+const adminController = require("../controllers/adminController");
+const leaderboardController = require("../controllers/leaderboardController");
+const teamController = require("../controllers/teamController");
+const userController = require("../controllers/userController");
 
-  // Données de démonstration pour les meilleurs joueurs
-  const topPlayers = [
-    { pseudo: "MasterGuesser", bestScore: 250, bestAttempts: 4 },
-    { pseudo: "LuckyNumber", bestScore: 200, bestAttempts: 5 },
-    { pseudo: "NumberWizard", bestScore: 167, bestAttempts: 6 },
-    { pseudo: "BinarySearchPro", bestScore: 143, bestAttempts: 7 },
-    { pseudo: "MathGenius", bestScore: 125, bestAttempts: 8 },
-  ];
+const { isAuthenticated, isAdmin } = require("../middlewares/auth");
 
-  res.render("index", {
-    title: "Accueil",
-    stats,
-    topPlayers,
-  });
-});
+// Page d'accueil publique
+router.get("/", homeController.getHome);
 
-// Route pour les pages statiques
-router.get("/about", (req, res) => {
-  res.render("about", {
-    title: "À propos",
-  });
-});
+// Routes d'authentification
+router.get("/login", authController.getLogin);
+router.post("/login", authController.postLogin);
+router.get("/register", authController.getRegister);
+router.post("/register", authController.postRegister);
+router.get("/logout", authController.logout);
 
-router.get("/rules", (req, res) => {
-  res.render("rules", {
-    title: "Règles du jeu",
-  });
-});
+// Routes de jeu (protégées)
+router.get("/game/play", isAuthenticated, gameController.getGame);
+router.post("/game/guess", isAuthenticated, gameController.guess); // Route classique
+router.post("/game/guess-ajax", isAuthenticated, gameController.guessAjax); // Nouvelle route AJAX
+router.get("/game/reset", isAuthenticated, gameController.resetGame);
+// Route pour le classement
+router.get("/leaderboard", leaderboardController.getLeaderboard);
+router.get("/leaderboard/teams", leaderboardController.getTeamLeaderboard);
 
-router.get("/contact", (req, res) => {
-  res.render("contact", {
-    title: "Contact",
-  });
-});
+// Routes pour les équipes
+router.get("/teams", teamController.listTeams);
+router.get("/teams/create", isAuthenticated, teamController.createTeamForm);
+router.post("/teams/create", isAuthenticated, teamController.createTeam);
+router.get("/teams/:id", teamController.teamDetails);
+router.get("/teams/:id/join", isAuthenticated, teamController.joinTeam);
+router.get("/teams/:id/leave", isAuthenticated, teamController.leaveTeam);
 
-// Route pour les mentions légales
-router.get("/legal", (req, res) => {
-  res.render("legal", {
-    title: "Mentions légales",
-  });
-});
+// Routes utilisateur
+router.get("/profile", isAuthenticated, userController.getUserProfile);
+router.get("/profile/:id", isAuthenticated, userController.getUserProfile);
 
-// Route pour la page 404 (catch-all pour les routes non trouvées)
-router.get("*", (req, res) => {
-  res.status(404).render("404", {
-    title: "Page non trouvée",
-  });
-});
+// Routes admin (protégées)
+router.get("/admin/users", isAuthenticated, isAdmin, adminController.usersList);
 
 module.exports = router;

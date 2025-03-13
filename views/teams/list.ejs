@@ -1,0 +1,42 @@
+<%- include('../partials/header', { title: 'Équipes' }) %>
+
+<div class="card">
+  <h2>Équipes</h2>
+
+  <div class="form-actions">
+    <a href="/teams/create" class="btn btn-primary">Créer une équipe</a>
+  </div>
+
+  <% if (teams && teams.length > 0) { %>
+  <div class="teams-list">
+    <% teams.forEach(team => { %>
+    <div class="team-card">
+      <h3><%= team.name %></h3>
+      <p><%= team.description || 'Aucune description' %></p>
+      <div class="team-stats">
+        <span
+          ><i class="fas fa-users"></i> <%= team.memberCount %> membre<%=
+          team.memberCount > 1 ? 's' : '' %></span
+        >
+      </div>
+      <div class="team-actions">
+        <a href="/teams/<%= team._id %>" class="btn">Voir détails</a>
+        <% if (!team.isMember) { %>
+        <a href="/teams/<%= team._id %>/join" class="btn btn-primary"
+          >Rejoindre</a
+        >
+        <% } else { %>
+        <a href="/teams/<%= team._id %>/leave" class="btn btn-secondary"
+          >Quitter</a
+        >
+        <% } %>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+  <% } else { %>
+  <p>Aucune équipe n'a été créée pour le moment.</p>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

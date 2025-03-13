@@ -1,0 +1,41 @@
+<%- include('../partials/header', { title: 'Classement des équipes' }) %>
+
+<div class="card">
+  <h2>Classement des équipes</h2>
+  
+  <div class="leaderboard-tabs">
+    <a href="/leaderboard" class="leaderboard-tab">Joueurs</a>
+    <a href="/leaderboard/teams" class="leaderboard-tab active">Équipes</a>
+  </div>
+  
+  <% if (teams && teams.length > 0) { %>
+    <table class="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Rang</th>
+          <th>Équipe</th>
+          <th>Membres</th>
+          <th>Score moyen</th>
+          <th>Parties jouées</th>
+          <th>Membres actifs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% teams.forEach((team, index) => { %>
+          <tr class="<%= index < 3 ? 'rank-' + (index + 1) : '' %>">
+            <td class="leaderboard-rank"><%= index + 1 %></td>
+            <td><a href="/teams/<%= team.id %>"><%= team.name %></a></td>
+            <td><%= team.memberCount %></td>
+            <td><%= team.averageScore %></td>
+            <td><%= team.totalGames %></td>
+            <td><%= team.activeMembers %>/<%= team.memberCount %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>Aucune équipe n'a encore de score.</p>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

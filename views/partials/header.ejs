@@ -23,20 +23,27 @@
         </div>
         <div class="nav-links">
           <a href="/game/play" class="nav-link">Jouer</a>
-          <a href="/game/leaderboard" class="nav-link">Classement</a>
-          <a href="/game/teams" class="nav-link">Équipes</a>
+          <a href="/leaderboard" class="nav-link">Classement</a>
+          <a href="/teams" class="nav-link">Équipes</a>
+          <% if (typeof user !== 'undefined' && user && user.isAdmin) { %>
+          <a href="/admin/users" class="nav-link">Administration</a>
+          <% } %>
         </div>
         <div class="nav-auth">
-          <% if (user) { %>
+          <% if (typeof user !== 'undefined' && user) { %>
           <span class="user-info">
-            <i class="fas fa-user"></i> <%= user.pseudo %>
+            <i class="fas fa-user"></i>
+            <a href="/profile" class="user-profile-link"><%= user.pseudo %></a>
           </span>
-          <a href="/auth/logout" class="auth-link">
+          <a href="/logout" class="auth-link">
             <i class="fas fa-sign-out-alt"></i> Déconnexion
           </a>
           <% } else { %>
-          <a href="/auth/login" class="auth-link">
+          <a href="/login" class="auth-link">
             <i class="fas fa-sign-in-alt"></i> Connexion
+          </a>
+          <a href="/register" class="auth-link register-link">
+            <i class="fas fa-user-plus"></i> S'inscrire
           </a>
           <% } %>
         </div>
@@ -52,12 +59,16 @@
         </p>
       </header>
 
-      <% if (success_msg && success_msg.length > 0) { %>
+      <% if (typeof success_msg !== 'undefined' && success_msg &&
+      success_msg.length > 0) { %>
       <div class="alert alert-success"><%= success_msg %></div>
-      <% } %> <% if (error_msg && error_msg.length > 0) { %>
+      <% } %> <% if (typeof error_msg !== 'undefined' && error_msg &&
+      error_msg.length > 0) { %>
       <div class="alert alert-error"><%= error_msg %></div>
-      <% } %> <% if (error && error.length > 0) { %>
+      <% } %> <% if (typeof error !== 'undefined' && error && error.length > 0)
+      { %>
       <div class="alert alert-error"><%= error %></div>
       <% } %>
     </div>
-
+  </body>
+</html>

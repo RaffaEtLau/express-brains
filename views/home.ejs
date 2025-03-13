@@ -1,0 +1,83 @@
+<%- include('./partials/header', { title: 'Accueil' }) %>
+
+<div class="home-hero">
+  <div class="brain-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <path d="M306.1 413.4c-15.5 0-27.9-12.6-27.9-28.1s12.4-28.1 27.9-28.1 27.9 12.6 27.9 28.1-12.5 28.1-27.9 28.1zm-100.4-56.2c-15.5 0-27.9-12.6-27.9-28.1s12.4-28.1 27.9-28.1 27.9 12.6 27.9 28.1-12.5 28.1-27.9 28.1zm157.5-42.1c-7.7-11.5-7.3-26.9 1.2-38l.9-1.1c8.8-10.9 23.9-13.2 35.5-5l1 .7c11.1 7.4 15 22.3 8.8 34L396 331.9c-5.3 10.4-15.9 16.9-27.6 16.9-17.6 0-32-14.3-32-32.1V156.4c0-12.6-5.5-24.7-15-33l-24-21c-7.8-6.8-8.1-19-1.6-26.2 6.5-7.4 17.7-7.9 24.8-1.2l21.9 20.9c16.4 15.6 30.9 40 30.9 63.6v152c0 14.9 13.5 24.2 27.1 20.6l1.4-.4c24.8-8.3 50.3 11.1 50.3 36.9v104.6c0 15.9-14.5 26.8-29.2 22l-7.6-2.4c-13.3-4.3-21.2-18.5-18-32.2l3.9-16.5c2.4-10.2-5.4-19.8-16-19.8h-57.2zm-12.1-196.5c0-26.5 21.4-48.1 48.3-48.1h15.6c28.2 0 49.6 24.2 46.5 51.7l-11.3 98.4c-2.4 21.1-19.8 36.8-41.2 36.8-23.8 0-42.6-19.5-42.6-43.1V240c0-8.8-7.3-16-16.1-16-8.9 0-16.1 7.2-16.1 16v32c0 8.8-7.2 16-16.1 16-8.9 0-16.1-7.2-16.1-16V118.6zm-80.8 56c-26.5 0-48-21.3-48-47.5v-16c0-28.6 24.5-50.5 52.5-47.2l99.2 11.3c21.1 2.4 37 19.8 37 41.2 0 23.5-19.5 42.2-42.9 42.2h-32.1c-8.8 0-16 7.2-16 16.1 0 8.9 7.2 16.1 16 16.1h32.1c8.8 0 16 7.2 16 16.1 0 8.9-7.2 16.1-16 16.1H175c-8.8 0-16 7.2-16 16.1 0 8.9 7.2 16.1 16 16.1h.5c12.3 0 23.5 7.5 28.1 18.9l44.1 107.5c5.7 13.8-.1 29.7-13.8 35.4-9.7 4-20.5 1.5-27.8-5.1l-21.9-20c-12.6-11.5-24.6-31.8-24.6-49.9 0-18.2 15.9-31 33.4-28l71.8 12c12.4 2.1 21.2 12.9 21.2 25.5 0 13.7-11 24.7-24.7 24.7h-50.3c-13.5 0-24.5-10.8-24.7-24.3l-.5-28.2c-.2-13.5-11.3-24.5-24.9-24.5-13.8 0-24.9 11.1-24.9 24.9v26.6c0 10-4.9 19.3-13.1 25l-29.2 20.3c-11.2 7.8-26.6 5.1-34.4-6.1-7.8-11.2-5.1-26.5 6.1-34.4l18.8-13.1c10.2-7.1 10.2-21.8 0-28.9L86 294.3c-11.5-8-14.3-23.9-6.3-35.4 8-11.5 23.9-14.3 35.4-6.3l86.4 59.9c10.2 7.1 23.8 5.3 31.9-4.1l15.5-17.8c8.1-9.3 7.2-23.4-2.1-31.5l-53.3-46.5c-10.8-9.4-28.1-9.3-38.8.3l-82.4 73.9c-5.8 5.2-12 4.2-14.2 3.4-2.2-.8-7.9-3.2-10.9-10.7-2.3-5.7-1.5-11.8 2.2-16.6l57.1-73.5c6.3-8.1 4.8-19.8-3.3-26-8.1-6.3-19.8-4.8-26 3.3l-29.4 37.8c-5.8 7.5-15.3 10.7-24.3 8.1-11.9-3.4-18.6-15.9-14.9-27.7l8.9-28.4c4.8-15.1 18.4-25.4 34.2-25.9 19.2-.5 34.7 15.2 34.7 34.1v14.7c0 8.8 7.2 16.1 16.1 16.1 8.8 0 16-7.2 16-16.1V174.6h.1z"/>
+    </svg>
+  </div>
+  <h1>EXPRESS BRAINS</h1>
+  <p>Découvrez en un minimum de tours le nombre qui se cache derrière la carte mystère !</p>
+  <a href="/game/play" class="play-button">Jouer maintenant</a>
+</div>
+
+<div class="features-grid">
+  <div class="feature-card">
+    <div class="feature-icon">
+      <i class="fas fa-brain"></i>
+    </div>
+    <h3>Testez votre logique</h3>
+    <p>Utilisez votre déduction pour trouver le nombre secret entre 1 et 100 en un minimum d'essais.</p>
+  </div>
+  
+  <div class="feature-card">
+    <div class="feature-icon">
+      <i class="fas fa-trophy"></i>
+    </div>
+    <h3>Compétition</h3>
+    <p>Comparez vos scores avec d'autres joueurs et grimpez dans le classement pour devenir le meilleur.</p>
+  </div>
+  
+  <div class="feature-card">
+    <div class="feature-icon">
+      <i class="fas fa-users"></i>
+    </div>
+    <h3>Équipes</h3>
+    <p>Créez ou rejoignez des équipes pour défier collectivement les autres groupes et partager vos stratégies.</p>
+  </div>
+</div>
+
+    <div class="cta-buttons">
+      <% if (typeof user !== 'undefined' && user) { %>
+      <a href="/game/play" class="btn btn-primary btn-large">
+        <i class="fas fa-play-circle"></i> Jouer maintenant
+      </a>
+      <a href="/leaderboard" class="btn btn-secondary">
+        <i class="fas fa-list-ol"></i> Voir le classement
+      </a>
+      <% } else { %>
+      <a href="/login" class="btn btn-primary btn-large">
+        <i class="fas fa-sign-in-alt"></i> Se connecter pour jouer
+      </a>
+      <a href="/register" class="btn btn-secondary">
+        <i class="fas fa-user-plus"></i> Créer un compte
+      </a>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<div class="home-sections">
+  <div class="section how-to-play">
+    <h2>Comment jouer</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <p>Devinez un nombre entre 1 et 100</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <p>
+          Recevez des indices pour savoir si le nombre est plus grand ou plus
+          petit
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <p>Continuez jusqu'à trouver le nombre mystère</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>

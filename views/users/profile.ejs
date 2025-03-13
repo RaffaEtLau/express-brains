@@ -1,0 +1,97 @@
+<%- include('../partials/header', { title: title }) %>
+
+<div class="card">
+  <h2>Profil de <%= user.pseudo %></h2>
+
+  <div class="profile-info">
+    <p><strong>Email:</strong> <%= user.email %></p>
+    <p>
+      <strong>Date d'inscription:</strong> <%= new
+      Date(user.createdAt).toLocaleDateString() %>
+    </p>
+    <p>
+      <strong>Statut:</strong> <%= user.isAdmin ? 'Administrateur' :
+      'Utilisateur' %>
+    </p>
+  </div>
+
+  <div class="profile-section">
+    <h3>Statistiques</h3>
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-value"><%= stats.totalGames %></div>
+        <div class="stat-label">Parties jouées</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">
+          <%= stats.bestScore !== null ? stats.bestScore : '-' %>
+        </div>
+        <div class="stat-label">Meilleur score</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">
+          <%= stats.averageScore !== null ? stats.averageScore : '-' %>
+        </div>
+        <div class="stat-label">Score moyen</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <h3>Équipes (<%= teams.length %>)</h3>
+    <% if (teams.length > 0) { %>
+    <div class="teams-list small">
+      <% teams.forEach(team => { %>
+      <div class="team-card small">
+        <h4><%= team.name %></h4>
+        <p>
+          <strong>Rôle:</strong> <%= team.role === 'admin' ? 'Administrateur' :
+          'Membre' %>
+        </p>
+        <p>
+          <strong>Rejoint le:</strong> <%= new
+          Date(team.joinedAt).toLocaleDateString() %>
+        </p>
+        <div class="team-actions">
+          <a href="/teams/<%= team.id %>" class="btn small">Voir l'équipe</a>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+    <% } else { %>
+    <p>Cet utilisateur n'appartient à aucune équipe.</p>
+    <% } %>
+  </div>
+
+  <div class="profile-section">
+    <h3>Historique des parties (<%= games.length %>)</h3>
+    <% if (games.length > 0) { %>
+    <table class="leaderboard-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre mystère</th>
+          <th>Tentatives</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% games.forEach((game, index) => { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= game.secretNumber %></td>
+          <td class="<%= index === 0 ? 'best-score' : '' %>">
+            <%= game.attempts %> tentative<%= game.attempts > 1 ? 's' : '' %>
+          </td>
+          <td><%= new Date(game.completedAt).toLocaleString() %></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <% } else { %>
+    <p>Aucune partie terminée pour le moment.</p>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

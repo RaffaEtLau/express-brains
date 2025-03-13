@@ -1,0 +1,79 @@
+<%- include('../partials/header', { title: 'Jouer' }) %>
+
+<div class="card">
+  <% if (game && game.found) { %>
+  <!-- Affichage quand le nombre est trouvé -->
+  <div class="card-icon">
+    <div class="card-icon-inner">
+      <div class="number-display"><%= game.secretNumber %></div>
+    </div>
+  </div>
+  <h2>Bravo !</h2>
+  <p>
+    Vous avez trouvé le nombre mystère en <%= game.attempts %> essai<%=
+    game.attempts > 1 ? 's' : '' %>.
+  </p>
+  <div class="form-actions">
+    <a href="/game/reset" class="btn">Rejouer</a>
+  </div>
+  <% } else { %>
+  <!-- Affichage pour deviner -->
+  <h1>Qui suis-je ?</h1>
+
+  <p>Quel nombre se cache derrière cette carte mystère ?</p>
+
+  <form action="/game/guess" method="POST">
+    <div class="input-wrapper">
+      <input
+        type="number"
+        name="guess"
+        min="1"
+        max="100"
+        placeholder="?"
+        required
+      />
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn">J'ai trouvé !</button>
+    </div>
+  </form>
+
+  <% if (game && game.attempts > 0) { %>
+  <div class="attempts">
+    <%= game.attempts %> essai<%= game.attempts > 1 ? 's' : '' %>
+  </div>
+  <% } %> <% } %>
+</div>
+
+<!-- Boîte de feedback - au-dessus de l'historique -->
+<% if (feedback) { %>
+<div class="feedback-container">
+  <div class="alert alert-<%= feedback.type %>"><%= feedback.message %></div>
+</div>
+<% } %>
+
+<!-- Historique des tentatives -->
+<% if (game && game.guessHistory && game.guessHistory.length > 0 && !game.found)
+{ %>
+<div class="history-section">
+  <h3>Historique des tentatives</h3>
+  <div class="guess-history">
+    <% game.guessHistory.slice().reverse().forEach(guess => { %>
+    <div class="guess-item guess-<%= guess.result %>">
+      <span class="guess-number"><%= guess.number %></span>
+      <span class="guess-result">
+        <% if (guess.result === 'low') { %>
+        <i class="fas fa-arrow-up"></i> Trop bas <% } else if (guess.result ===
+        'high') { %> <i class="fas fa-arrow-down"></i> Trop haut <% } else { %>
+        <i class="fas fa-check"></i> Correct <% } %>
+      </span>
+    </div>
+    <% }); %>
+  </div>
+</div>
+<% } %>
+
+<!-- Script pour gérer le jeu -->
+<script src="/js/game.js"></script>
+
+<%- include('../partials/footer') %>

@@ -1,47 +1,27 @@
 <%- include('../partials/header', { title: 'Connexion' }) %>
 
-<main>
-  <div class="card auth-card">
-    <h2>CONNEXION</h2>
+<div class="card auth-card">
+  <h2>Connexion</h2>
 
-    <form action="/auth/login" method="POST" class="auth-form">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          autocomplete="email"
-          placeholder="Votre adresse email"
-          value="<%= typeof email != 'undefined' ? email : '' %>"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="password">Mot de passe</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          required
-          placeholder="Votre mot de passe"
-          autocomplete="current-password"
-        />
-      </div>
-
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary">
-          <i class="fas fa-sign-in-alt"></i> Se connecter
-        </button>
-      </div>
-    </form>
-
-    <div class="auth-links">
-      <p>Vous n'avez pas de compte? <a href="/auth/register">Créez-en un</a></p>
-      <p><a href="/auth/forgot-password">Mot de passe oublié?</a></p>
+  <form action="/login" method="POST" class="auth-form">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
     </div>
+
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input type="password" id="password" name="password" required />
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Se connecter</button>
+    </div>
+  </form>
+
+  <div class="auth-links">
+    Vous n'avez pas de compte ? <a href="/register">Créer un compte</a>
   </div>
-</main>
+</div>
 
 <%- include('../partials/footer') %>

@@ -1,0 +1,84 @@
+<%- include('../partials/header', { title: team.name }) %>
+
+<div class="card">
+  <h2><%= team.name %></h2>
+
+  <% if (team.description) { %>
+  <p><%= team.description %></p>
+  <% } %>
+
+  <div class="team-actions">
+    <% if (!isMember) { %>
+    <a href="/teams/<%= team._id %>/join" class="btn btn-primary"
+      >Rejoindre l'équipe</a
+    >
+    <% } else { %>
+    <a href="/teams/<%= team._id %>/leave" class="btn btn-secondary"
+      >Quitter l'équipe</a
+    >
+    <% } %>
+  </div>
+
+  <div class="team-section">
+    <h3>Membres (<%= members.length %>)</h3>
+
+    <% if (members && members.length > 0) { %>
+    <table class="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Pseudo</th>
+          <th>Rôle</th>
+          <th>Date d'adhésion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% members.forEach(member => { %>
+        <tr>
+          <td>
+            <a href="/profile/<%= member.userId %>"><%= member.pseudo %></a>
+          </td>
+          <td><%= member.role === 'admin' ? 'Administrateur' : 'Membre' %></td>
+          <td><%= new Date(member.joinedAt).toLocaleDateString() %></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <% } else { %>
+    <p>Cette équipe n'a pas encore de membres.</p>
+    <% } %>
+  </div>
+
+  <div class="team-section">
+    <h3>Classement de l'équipe</h3>
+
+    <% if (scores && scores.length > 0) { %>
+    <table class="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Rang</th>
+          <th>Joueur</th>
+          <th>Meilleur score</th>
+          <th>Parties terminées</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% scores.forEach((score, index) => { %>
+        <tr class="<%= index < 3 ? 'rank-' + (index + 1) : '' %>">
+          <td class="leaderboard-rank"><%= index + 1 %></td>
+          <td><%= score.pseudo %></td>
+          <td>
+            <%= score.bestScore %> tentative<%= score.bestScore > 1 ? 's' : ''
+            %>
+          </td>
+          <td><%= score.gamesCompleted %></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <% } else { %>
+    <p>Aucun membre de l'équipe n'a encore joué.</p>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
