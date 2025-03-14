@@ -1,0 +1,166 @@
+/* Styles pour le mode cerveau en feu */
+.fire-mode-toggle-container {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.fire-mode-toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.fire-mode-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.fire-mode-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 30px;
+}
+
+.fire-mode-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .fire-mode-slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .fire-mode-slider:before {
+  transform: translateX(30px);
+}
+
+.fire-mode-label {
+  font-weight: bold;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+}
+
+.fire-mode-label i {
+  color: var(--primary-color);
+  margin-right: 0.5rem;
+}
+
+/* Timer display */
+.timer-display {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  background-color: #f5f5f5;
+}
+
+.timer-display.pulse {
+  animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+/* Flames */
+.flame-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.flame {
+  position: absolute;
+  bottom: 0;
+  width: 20px;
+  height: 50px;
+  background: linear-gradient(to top, var(--primary-color), #ff6600, #ffcc00);
+  border-radius: 20px 20px 5px 5px;
+  animation: flicker 0.5s infinite alternate;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  transform-origin: center bottom;
+}
+
+@keyframes flicker {
+  0% {
+    transform: scaleX(1) scaleY(1);
+  }
+  25% {
+    transform: scaleX(0.95) scaleY(1.05);
+  }
+  50% {
+    transform: scaleX(1.05) scaleY(0.95);
+  }
+  75% {
+    transform: scaleX(0.95) scaleY(1.05);
+  }
+  100% {
+    transform: scaleX(1) scaleY(1);
+  }
+}
+
+/* Pour le bouton de bonus */
+.bonus-indicator {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: bold;
+  white-space: nowrap;
+  opacity: 0;
+  animation: fadeInOut 2s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}

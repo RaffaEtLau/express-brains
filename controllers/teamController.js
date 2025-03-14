@@ -10,6 +10,14 @@ exports.listTeams = async (req, res) => {
     // Récupérer toutes les équipes
     const teams = await Team.find().sort({ name: 1 });
 
+    // Récupérer l'équipe actuelle de l'utilisateur, s'il en a une
+    let currentUserTeam = null;
+    if (req.session.user) {
+      currentUserTeam = await TeamMember.findOne({
+        userId: req.session.user.id,
+      });
+    }
+
     // Pour chaque équipe, récupérer le nombre de membres
     const teamsWithMemberCount = await Promise.all(
       teams.map(async (team) => {
@@ -18,18 +26,16 @@ exports.listTeams = async (req, res) => {
         });
 
         // Vérifier si l'utilisateur actuel est membre de cette équipe
-        const isMember = req.session.user
-          ? await TeamMember.findOne({
-              userId: req.session.user.id,
-              teamId: team._id,
-            })
-          : null;
+        const isMember =
+          req.session.user && currentUserTeam
+            ? currentUserTeam.teamId.toString() === team._id.toString()
+            : false;
 
         return {
           ...team.toObject(),
           memberCount,
-          isMember: !!isMember,
-          role: isMember ? isMember.role : null,
+          isMember: isMember,
+          role: isMember && currentUserTeam ? currentUserTeam.role : null,
         };
       })
     );
@@ -37,6 +43,7 @@ exports.listTeams = async (req, res) => {
     res.render("teams/list", {
       title: "Équipes",
       teams: teamsWithMemberCount,
+      userHasTeam: !!currentUserTeam,
     });
   } catch (error) {
     console.error("Erreur lors de la récupération des équipes:", error);
@@ -49,10 +56,29 @@ exports.listTeams = async (req, res) => {
 };
 
 // Afficher le formulaire de création d'équipe
-exports.createTeamForm = (req, res) => {
-  res.render("teams/create", {
-    title: "Créer une équipe",
-  });
+exports.createTeamForm = async (req, res) => {
+  try {
+    // Vérifier si l'utilisateur fait déjà partie d'une équipe
+    const existingMembership = await TeamMember.findOne({
+      userId: req.session.user.id,
+    });
+
+    if (existingMembership) {
+      req.flash(
+        "error_msg",
+        "Vous faites déjà partie d'une équipe. Vous devez la quitter avant d'en créer une nouvelle."
+      );
+      return res.redirect("/teams");
+    }
+
+    res.render("teams/create", {
+      title: "Créer une équipe",
+    });
+  } catch (error) {
+    console.error("Erreur lors de l'accès au formulaire de création:", error);
+    req.flash("error_msg", "Une erreur est survenue");
+    res.redirect("/teams");
+  }
 };
 
 // Traiter la création d'équipe
@@ -71,6 +97,19 @@ exports.createTeam = async (req, res) => {
     if (existingTeam) {
       req.flash("error_msg", "Ce nom d'équipe est déjà utilisé");
       return res.redirect("/teams/create");
+    }
+
+    // Vérifier si l'utilisateur fait déjà partie d'une équipe
+    const existingMembership = await TeamMember.findOne({
+      userId: req.session.user.id,
+    });
+
+    if (existingMembership) {
+      req.flash(
+        "error_msg",
+        "Vous faites déjà partie d'une équipe. Vous devez la quitter avant d'en créer une nouvelle."
+      );
+      return res.redirect("/teams");
     }
 
     // Créer l'équipe
@@ -141,6 +180,14 @@ exports.teamDetails = async (req, res) => {
       ? await TeamMember.findOne({ userId: req.session.user.id, teamId: id })
       : null;
 
+    // Récupérer l'équipe actuelle de l'utilisateur, s'il en a une
+    let currentUserTeam = null;
+    if (req.session.user) {
+      currentUserTeam = await TeamMember.findOne({
+        userId: req.session.user.id,
+      });
+    }
+
     // Récupérer les scores de l'équipe
     const teamScores = await Score.aggregate([
       // Joindre avec TeamMember pour récupérer les scores des membres de l'équipe
@@ -199,6 +246,10 @@ exports.teamDetails = async (req, res) => {
       scores: formattedScores,
       isMember: !!userMembership,
       isAdmin: userMembership && userMembership.role === "admin",
+      userHasTeam: !!currentUserTeam,
+      canJoin:
+        !currentUserTeam ||
+        currentUserTeam.teamId.toString() === team._id.toString(),
     });
   } catch (error) {
     console.error(
@@ -225,15 +276,24 @@ exports.joinTeam = async (req, res) => {
       return res.redirect("/teams");
     }
 
-    // Vérifier si l'utilisateur est déjà membre
+    // Vérifier si l'utilisateur est déjà membre d'une équipe
     const existingMembership = await TeamMember.findOne({
       userId: req.session.user.id,
-      teamId: id,
     });
 
     if (existingMembership) {
-      req.flash("error_msg", "Vous êtes déjà membre de cette équipe");
-      return res.redirect(`/teams/${id}`);
+      // S'il est déjà dans cette équipe
+      if (existingMembership.teamId.toString() === id) {
+        req.flash("error_msg", "Vous êtes déjà membre de cette équipe");
+        return res.redirect(`/teams/${id}`);
+      } else {
+        // S'il est dans une autre équipe
+        req.flash(
+          "error_msg",
+          "Vous faites déjà partie d'une équipe. Vous devez la quitter avant d'en rejoindre une nouvelle."
+        );
+        return res.redirect("/teams");
+      }
     }
 
     // Créer l'appartenance
@@ -288,11 +348,28 @@ exports.leaveTeam = async (req, res) => {
       });
 
       if (adminCount <= 1) {
-        req.flash(
-          "error_msg",
-          "Vous ne pouvez pas quitter l'équipe car vous êtes le dernier administrateur"
-        );
-        return res.redirect(`/teams/${id}`);
+        // Si c'est le dernier admin, vérifiez s'il y a d'autres membres
+        const memberCount = await TeamMember.countDocuments({
+          teamId: id,
+        });
+
+        if (memberCount > 1) {
+          req.flash(
+            "error_msg",
+            "Vous ne pouvez pas quitter l'équipe car vous êtes le dernier administrateur. Veuillez d'abord promouvoir un autre membre en administrateur."
+          );
+          return res.redirect(`/teams/${id}`);
+        } else {
+          // Si l'admin est le seul membre, supprimez l'équipe
+          await Team.deleteOne({ _id: id });
+          await TeamMember.deleteOne({ _id: membership._id });
+
+          req.flash(
+            "success_msg",
+            `L'équipe ${team.name} a été supprimée car vous étiez le dernier membre`
+          );
+          return res.redirect("/teams");
+        }
       }
     }
 
@@ -308,5 +385,56 @@ exports.leaveTeam = async (req, res) => {
       "Une erreur est survenue lors du départ de l'équipe"
     );
     res.redirect("/teams");
+  }
+};
+
+// Promouvoir un membre au rang d'administrateur
+exports.promoteMember = async (req, res) => {
+  try {
+    const { teamId, memberId } = req.params;
+
+    // Vérifier si l'utilisateur actuel est admin de l'équipe
+    const currentUserMembership = await TeamMember.findOne({
+      userId: req.session.user.id,
+      teamId: teamId,
+      role: "admin",
+    });
+
+    if (!currentUserMembership) {
+      req.flash(
+        "error_msg",
+        "Vous n'avez pas les droits d'administrateur pour cette équipe"
+      );
+      return res.redirect(`/teams/${teamId}`);
+    }
+
+    // Récupérer le membre à promouvoir
+    const memberToPromote = await TeamMember.findById(memberId);
+
+    if (!memberToPromote || memberToPromote.teamId.toString() !== teamId) {
+      req.flash("error_msg", "Membre non trouvé dans cette équipe");
+      return res.redirect(`/teams/${teamId}`);
+    }
+
+    // Promouvoir le membre
+    memberToPromote.role = "admin";
+    await memberToPromote.save();
+
+    // Récupérer les informations de l'utilisateur promu
+    const user = await User.findById(memberToPromote.userId);
+    const username = user ? user.pseudo : "Utilisateur inconnu";
+
+    req.flash(
+      "success_msg",
+      `${username} a été promu administrateur de l'équipe`
+    );
+    res.redirect(`/teams/${teamId}`);
+  } catch (error) {
+    console.error("Erreur lors de la promotion du membre:", error);
+    req.flash(
+      "error_msg",
+      "Une erreur est survenue lors de la promotion du membre"
+    );
+    res.redirect(`/teams/${req.params.teamId}`);
   }
 };

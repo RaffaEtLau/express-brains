@@ -1,79 +1,426 @@
 <%- include('../partials/header', { title: 'Jouer' }) %>
 
-<div class="card">
-  <% if (game && game.found) { %>
-  <!-- Affichage quand le nombre est trouvé -->
-  <div class="card-icon">
-    <div class="card-icon-inner">
-      <div class="number-display"><%= game.secretNumber %></div>
+<div class="game-container">
+  <div class="card">
+    <% if (game && game.found) { %>
+    <!-- Affichage quand le nombre est trouvé -->
+    <div class="card-icon">
+      <div class="card-icon-inner">
+        <div class="number-display"><%= game.secretNumber %></div>
+      </div>
     </div>
-  </div>
-  <h2>Bravo !</h2>
-  <p>
-    Vous avez trouvé le nombre mystère en <%= game.attempts %> essai<%=
-    game.attempts > 1 ? 's' : '' %>.
-  </p>
-  <div class="form-actions">
-    <a href="/game/reset" class="btn">Rejouer</a>
-  </div>
-  <% } else { %>
-  <!-- Affichage pour deviner -->
-  <h1>Qui suis-je ?</h1>
-
-  <p>Quel nombre se cache derrière cette carte mystère ?</p>
-
-  <form action="/game/guess" method="POST">
-    <div class="input-wrapper">
-      <input
-        type="number"
-        name="guess"
-        min="1"
-        max="100"
-        placeholder="?"
-        required
-      />
-    </div>
+    <h2>Bravo !</h2>
+    <p>
+      Vous avez trouvé le nombre mystère en <%= game.attempts %> essai<%=
+      game.attempts > 1 ? 's' : '' %>.
+    </p>
     <div class="form-actions">
-      <button type="submit" class="btn">J'ai trouvé !</button>
+      <a href="/game/reset" class="btn btn-primary">Rejouer</a>
     </div>
-  </form>
+    <% } else { %>
+    <!-- Affichage pour deviner -->
+    <h2 class="game-title">Qui suis-je ?</h2>
 
-  <% if (game && game.attempts > 0) { %>
-  <div class="attempts">
-    <%= game.attempts %> essai<%= game.attempts > 1 ? 's' : '' %>
-  </div>
-  <% } %> <% } %>
-</div>
+    <p class="game-description">Quel nombre se cache derrière cette carte mystère ?</p>
 
-<!-- Boîte de feedback - au-dessus de l'historique -->
-<% if (feedback) { %>
-<div class="feedback-container">
-  <div class="alert alert-<%= feedback.type %>"><%= feedback.message %></div>
-</div>
-<% } %>
+    <form action="/game/guess" method="POST" class="guess-form" id="guessForm">
+      <div class="input-wrapper">
+        <input
+          type="number"
+          name="guess"
+          min="1"
+          max="100"
+          placeholder="?"
+          required
+          class="guess-input"
+        />
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">J'ai trouvé !</button>
+      </div>
+    </form>
 
-<!-- Historique des tentatives -->
-<% if (game && game.guessHistory && game.guessHistory.length > 0 && !game.found)
-{ %>
-<div class="history-section">
-  <h3>Historique des tentatives</h3>
-  <div class="guess-history">
-    <% game.guessHistory.slice().reverse().forEach(guess => { %>
-    <div class="guess-item guess-<%= guess.result %>">
-      <span class="guess-number"><%= guess.number %></span>
-      <span class="guess-result">
-        <% if (guess.result === 'low') { %>
-        <i class="fas fa-arrow-up"></i> Trop bas <% } else if (guess.result ===
-        'high') { %> <i class="fas fa-arrow-down"></i> Trop haut <% } else { %>
-        <i class="fas fa-check"></i> Correct <% } %>
-      </span>
+    <% if (game && game.attempts > 0) { %>
+    <div class="attempts">
+      <%= game.attempts %> essai<%= game.attempts > 1 ? 's' : '' %>
     </div>
-    <% }); %>
+    <% } %> 
+    
+    <!-- Mode spécial (uniquement affiché pour les utilisateurs connectés) -->
+    <% if (typeof user !== 'undefined' && user) { %>
+    <div class="mode-special-container">
+      <h3 class="mode-title">Mode spécial</h3>
+      
+      <div class="mode-card">
+        <div class="mode-icon">
+          <i class="fas fa-fire"></i>
+        </div>
+        <div class="mode-info">
+          <div class="mode-name">Cerveau en Feu</div>
+          <div class="mode-description">
+            Contre la montre! Trouvez le nombre avant que le temps expire.
+          </div>
+        </div>
+        <label class="fire-mode-toggle">
+          <input type="checkbox" id="fire-mode-toggle">
+          <span class="fire-mode-slider"></span>
+        </label>
+      </div>
+    </div>
+    <% } %>
+    <% } %>
   </div>
-</div>
-<% } %>
 
-<!-- Script pour gérer le jeu -->
-<script src="/js/game.js"></script>
+  <!-- Boîte de feedback - au-dessus de l'historique -->
+  <% if (feedback) { %>
+  <div class="feedback-container">
+    <div class="alert alert-<%= feedback.type %>"><%= feedback.message %></div>
+  </div>
+  <% } %>
+
+  <!-- Historique des tentatives -->
+  <% if (game && game.guessHistory && game.guessHistory.length > 0 && !game.found) { %>
+  <div class="history-section">
+    <h3>Historique des tentatives</h3>
+    <div class="guess-history">
+      <% game.guessHistory.slice().reverse().forEach(guess => { %>
+      <div class="guess-item guess-<%= guess.result %>">
+        <span class="guess-number"><%= guess.number %></span>
+        <span class="guess-result">
+          <% if (guess.result === 'low') { %>
+          <i class="fas fa-arrow-up"></i> Trop bas <% } else if (guess.result ===
+          'high') { %> <i class="fas fa-arrow-down"></i> Trop haut <% } else { %>
+          <i class="fas fa-check"></i> Correct <% } %>
+        </span>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<!-- Styles améliorés pour la page de jeu -->
+<style>
+/* Layout principal optimisé pour éviter le scroll */
+.game-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid #ddd;
+  box-shadow: var(--shadow-md);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  position: relative;
+}
+
+.game-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.game-description {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+/* Formulaire optimisé */
+.guess-form {
+  margin-bottom: 1rem;
+}
+
+.input-wrapper {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.guess-input {
+  width: 120px;
+  height: 50px;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 2px solid #ddd;
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.guess-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(230, 0, 0, 0.2);
+  outline: none;
+}
+
+.form-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  min-width: 140px;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.6rem 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Pour la carte de résultat */
+.number-display {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 1.5rem 0;
+  text-shadow: 0 2px 10px rgba(230, 0, 0, 0.3);
+}
+
+.attempts {
+  display: inline-block;
+  background-color: #f5f5f5;
+  color: var(--text-color);
+  padding: 0.4rem 1rem;
+  border-radius: 30px;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Mode spécial optimisé */
+.mode-special-container {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #ddd;
+}
+
+.mode-title {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.mode-card {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.mode-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  font-size: 1.3rem;
+  background-color: rgba(230, 0, 0, 0.1);
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.mode-info {
+  flex: 1;
+  text-align: left;
+}
+
+.mode-name {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-color);
+}
+
+.mode-description {
+  font-size: 0.85rem;
+  color: var(--light-text);
+}
+
+.fire-mode-toggle {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+  margin-left: 1rem;
+  flex-shrink: 0;
+}
+
+.fire-mode-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.fire-mode-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 30px;
+}
+
+.fire-mode-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .fire-mode-slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .fire-mode-slider:before {
+  transform: translateX(24px);
+}
+
+/* Timer display */
+.timer-display {
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0.5rem 0;
+  padding: 0.4rem;
+  border-radius: var(--radius-sm);
+  background-color: #f5f5f5;
+  color: var(--text-color);
+}
+
+.timer-display.pulse {
+  animation: pulse 0.5s infinite alternate;
+  color: var(--primary-color);
+}
+
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+/* Flames optimisées */
+.flame-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.flame {
+  position: absolute;
+  bottom: 0;
+  width: 15px;
+  height: 40px;
+  background: linear-gradient(to top, var(--primary-color), #ff6600, #ffcc00);
+  border-radius: 15px 15px 5px 5px;
+  animation: flicker 0.5s infinite alternate;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  transform-origin: center bottom;
+}
+
+@keyframes flicker {
+  0% { transform: scaleX(1) scaleY(1); }
+  100% { transform: scaleX(0.9) scaleY(1.1); }
+}
+
+/* Historique des tentatives */
+.history-section {
+  max-width: 800px;
+  margin: 1rem auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid #ddd;
+}
+
+.history-section h3 {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.guess-history {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.guess-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+}
+
+.guess-low {
+  background-color: var(--warning-bg);
+  color: var(--warning-color);
+  border: 1px solid var(--warning-color);
+}
+
+.guess-high {
+  background-color: var(--error-bg);
+  color: var(--error-color);
+  border: 1px solid var(--error-color);
+}
+
+.guess-correct {
+  background-color: var(--success-bg);
+  color: var(--success-color);
+  border: 1px solid var(--success-color);
+}
+
+.guess-number {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Feedback container */
+.feedback-container {
+  margin: 0.5rem auto 1rem;
+}
+
+/* Confetti container */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+</style>
 
 <%- include('../partials/footer') %>

@@ -4,13 +4,23 @@
   <h2>Équipes</h2>
 
   <div class="form-actions">
+    <% if (!userHasTeam) { %>
     <a href="/teams/create" class="btn btn-primary">Créer une équipe</a>
+    <% } else { %>
+    <span class="info-message"
+      ><i class="fas fa-info-circle"></i> Vous faites déjà partie d'une équipe.
+      Vous devez la quitter avant d'en créer une nouvelle.</span
+    >
+    <% } %>
   </div>
 
   <% if (teams && teams.length > 0) { %>
   <div class="teams-list">
     <% teams.forEach(team => { %>
-    <div class="team-card">
+    <div class="team-card <%= team.isMember ? 'my-team' : '' %>">
+      <% if (team.isMember) { %>
+      <div class="team-badge">Mon équipe</div>
+      <% } %>
       <h3><%= team.name %></h3>
       <p><%= team.description || 'Aucune description' %></p>
       <div class="team-stats">
@@ -21,11 +31,11 @@
       </div>
       <div class="team-actions">
         <a href="/teams/<%= team._id %>" class="btn">Voir détails</a>
-        <% if (!team.isMember) { %>
+        <% if (!team.isMember && !userHasTeam) { %>
         <a href="/teams/<%= team._id %>/join" class="btn btn-primary"
           >Rejoindre</a
         >
-        <% } else { %>
+        <% } else if (team.isMember) { %>
         <a href="/teams/<%= team._id %>/leave" class="btn btn-secondary"
           >Quitter</a
         >

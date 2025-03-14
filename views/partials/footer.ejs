@@ -1,10 +1,206 @@
 <footer>
-            <p>EXPRESS BRAINS © ENI 2025 LUCE L.</p>
-        </footer>
-    </div>
-    
-    <!-- Scripts -->
-    <script src="/js/storage.js"></script>
-    <script src="/js/game.js"></script>
+    <p>EXPRESS BRAINS © ENI 2025 LUCE L.</p>
+</footer>
+</div>
+
+<!-- Scripts originaux -->
+<script src="/js/storage.js"></script>
+<script src="/js/game.js"></script>
+
+<!-- Nouveaux scripts pour les fonctionnalités amusantes -->
+<% if (typeof user !== 'undefined' && user) { %>
+<!-- Scripts pour les fonctionnalités amusantes -->
+<script src="/js/brain-fire.js"></script>
+<script src="/js/confetti.js"></script>
+<script src="/js/brain-taunts.js"></script>
+
+<!-- Script pour assurer que les effets se chargent correctement -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Vérifier si nous sommes sur la page de succès
+  const successDisplay = document.querySelector('.number-display');
+  if (successDisplay) {
+    // Déclencher manuellement les confettis après un court délai
+    setTimeout(function() {
+      const event = new Event('success-found');
+      document.dispatchEvent(event);
+    }, 500);
+  }
+});
+</script>
+<% } %>
+
+<!-- Styles intégrés pour les fonctionnalités de jeu -->
+<style>
+/* Styles pour le mode cerveau en feu */
+.timer-display {
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0.5rem 0;
+  padding: 0.4rem;
+  border-radius: var(--radius-sm);
+  background-color: #f5f5f5;
+  color: var(--text-color);
+}
+
+.timer-display.pulse {
+  animation: pulse 0.5s infinite alternate;
+  color: var(--primary-color);
+}
+
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+/* Flammes */
+.flame-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.flame {
+  position: absolute;
+  bottom: 0;
+  width: 15px;
+  height: 40px;
+  background: linear-gradient(to top, var(--primary-color), #ff6600, #ffcc00);
+  border-radius: 15px 15px 5px 5px;
+  animation: flicker 0.5s infinite alternate;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  transform-origin: center bottom;
+}
+
+@keyframes flicker {
+  0% { transform: scaleX(1) scaleY(1); }
+  100% { transform: scaleX(0.9) scaleY(1.1); }
+}
+
+/* Styles pour les confettis */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  top: -20px;
+  width: 10px;
+  height: 10px;
+  opacity: 0.8;
+  border-radius: 0;
+  z-index: 9999;
+}
+
+.confetti:nth-child(3n) {
+  border-radius: 50%;
+}
+
+.confetti:nth-child(3n+1) {
+  border-radius: 2px;
+  transform: skew(20deg, 20deg);
+}
+
+.confetti:nth-child(3n+2) {
+  width: 5px;
+  height: 15px;
+  border-radius: 0;
+}
+
+@keyframes fall {
+  0% {
+    top: -20px;
+    transform: translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    top: 110vh;
+    transform: translateX(100px) rotate(900deg);
+    opacity: 0;
+  }
+}
+
+/* Animation de célébration */
+.celebration-animation {
+  animation: celebrate 1s ease-in-out;
+}
+
+@keyframes celebrate {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(230, 0, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(230, 0, 0, 0.8);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(230, 0, 0, 0.5);
+  }
+}
+
+/* Style pour l'input quand le temps est expiré */
+.time-expired {
+  animation: shake 0.5s ease-in-out infinite;
+  border-color: #ff0000 !important;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Styles pour les taunts */
+.taunt-container {
+  margin: 0.75rem auto;
+  max-width: 600px;
+  padding: 0.75rem 1.25rem;
+  background-color: #333;
+  color: white;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-style: italic;
+  font-weight: 500;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-left: 4px solid var(--primary-color);
+}
+
+.taunt-container::before {
+  content: '"';
+  font-size: 1.5rem;
+  position: absolute;
+  top: 0;
+  left: 10px;
+  color: var(--primary-color);
+  opacity: 0.3;
+}
+
+.taunt-container::after {
+  content: '"';
+  font-size: 1.5rem;
+  position: absolute;
+  bottom: -10px;
+  right: 10px;
+  color: var(--primary-color);
+  opacity: 0.3;
+}
+</style>
+
 </body>
 </html>

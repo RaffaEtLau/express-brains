@@ -35,40 +35,33 @@
             <i class="fas fa-user"></i>
             <a href="/profile" class="user-profile-link"><%= user.pseudo %></a>
           </span>
-          <a href="/logout" class="auth-link">
-            <i class="fas fa-sign-out-alt"></i> Déconnexion
-          </a>
+          <a href="/logout" class="auth-link"
+            ><i class="fas fa-sign-out-alt"></i
+          ></a>
           <% } else { %>
-          <a href="/login" class="auth-link">
-            <i class="fas fa-sign-in-alt"></i> Connexion
-          </a>
-          <a href="/register" class="auth-link register-link">
-            <i class="fas fa-user-plus"></i> S'inscrire
-          </a>
+          <a href="/login" class="auth-link"
+            ><i class="fas fa-sign-in-alt"></i
+          ></a>
+          <a href="/register" class="auth-link register-link"
+            ><i class="fas fa-user-plus"></i
+          ></a>
           <% } %>
         </div>
       </nav>
     </div>
 
     <div class="container">
-      <header class="main-header">
+      <% if (title !== 'Jouer' && title !== 'Accueil') { %>
+      <header class="mini-header">
         <h1>EXPRESS BRAINS</h1>
-        <p>
-          Découvrez en un minimum de tours le nombre qui se cache derrière la
-          carte mystère !
-        </p>
       </header>
-
-      <% if (typeof success_msg !== 'undefined' && success_msg &&
+      <% } %> <% if (typeof success_msg !== 'undefined' && success_msg &&
       success_msg.length > 0) { %>
       <div class="alert alert-success"><%= success_msg %></div>
-      <% } %> <% if (typeof error_msg !== 'undefined' && error_msg &&
-      error_msg.length > 0) { %>
-      <div class="alert alert-error"><%= error_msg %></div>
-      <% } %> <% if (typeof error !== 'undefined' && error && error.length > 0)
-      { %>
-      <div class="alert alert-error"><%= error %></div>
+      <% } %> <% if ((typeof error_msg !== 'undefined' && error_msg &&
+      error_msg.length > 0) || (typeof error !== 'undefined' && error &&
+      error.length > 0)) { %>
+      <div class="alert alert-error"><%= error_msg || error %></div>
       <% } %>
     </div>
-  </body>
-</html>
+

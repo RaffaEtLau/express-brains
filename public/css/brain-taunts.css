@@ -1,0 +1,135 @@
+/* Styles pour les taunts */
+.taunt-container {
+  margin: 1rem auto;
+  max-width: 600px;
+  padding: 0.75rem 1.5rem;
+  background-color: #333;
+  color: white;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-style: italic;
+  font-weight: 500;
+  transition: opacity 0.3s, transform 0.3s;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-left: 4px solid var(--primary-color);
+}
+
+.taunt-container::before {
+  content: '"';
+  font-size: 2rem;
+  position: absolute;
+  top: 0;
+  left: 10px;
+  color: var(--primary-color);
+  opacity: 0.3;
+}
+
+.taunt-container::after {
+  content: '"';
+  font-size: 2rem;
+  position: absolute;
+  bottom: -10px;
+  right: 10px;
+  color: var(--primary-color);
+  opacity: 0.3;
+}
+
+.taunt-container.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Animation pour faire apparaître le taunt */
+@keyframes tauntAppear {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Section de taunts personnalisés */
+.custom-taunts-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: var(--card-bg);
+  border: 1px solid #ddd;
+  border-radius: var(--radius-sm);
+}
+
+.custom-taunts-section h3 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  font-size: 1.3rem;
+}
+
+.custom-taunts-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: flex-end;
+}
+
+.custom-taunts-form .form-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.custom-taunts-list {
+  margin-top: 1.5rem;
+}
+
+.custom-taunts-list h4 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+.custom-taunts-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.custom-taunts-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background-color: #f5f5f5;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--primary-color);
+}
+
+.taunt-text {
+  flex: 1;
+  font-style: italic;
+}
+
+.taunt-proximity {
+  background-color: #333;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  margin: 0 0.5rem;
+}
+
+.delete-taunt {
+  color: var(--primary-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.delete-taunt:hover {
+  color: #cc0000;
+  transform: scale(1.1);
+}
